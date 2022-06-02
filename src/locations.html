@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;
+            padding: 10px;
+	        background-size: cover;
+			
+			background: #000000;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to top, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background-attachment: fixed;
+			}
+			h1 {
+			   padding-left: 5px;
+			}
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body class="animate__animated   animate__fadeIn">
+		
+	
+        <div class="container">
+			
+			<h1 style="color:white; font-size: 30px;" ><img style="width:60px"  src="img/riceeta.png"/> Riceeta</h1>
+			<br>
+			<p style="color:white; font-size: 10px; text-align: center;" class="fs-6">Please provide information about your farm and location.</p>
+			<br>
+			<div class="card border-dark mb-3" >
+			  <div class="card-header"><strong>Add Location</strong></div>
+			  <form action="" method="post" id="add_location_form">
+			  
+			  <div class="card-body text-dark">
+				
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Farm Name</label>
+				  <input type="text" class="form-control" id="p_name" placeholder="" required name="data[name]">
+				  <input type="hidden" class="form-control" id="p_user_id" placeholder="" required name="data[user_id]">
+				</div>
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Location</label>
+				  <input type="text" class="form-control" id="p_location" placeholder="" required name="data[location]">
+				</div>
+								
+				
+			  </div>
+			
+			  <div class="card-footer" style="padding-left:150px">
+				<button class="btn btn-primary" type="submit" name="add_location" ><strong>Add Location</strong></button>
+			  </div>
+			  
+			  </form>
+			
+			</div>
+			
+			
+		
+			<br>
+			
+			<ul class="list-group" id="results">
+			  
+			</ul>
+			
+			<br>
+			<br>
+			
+        </div>
+		
+		
+		
+		<script src="cordova.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script>
+			$(function(){
+				
+				server_ip = window.localStorage.getItem("server_url");
+				model_ip = window.localStorage.getItem("model_url");
+				_user = JSON.parse(window.localStorage.getItem("user"));
+				
+				
+				$('#p_user_id').val(_user.id);
+				
+				$("#results").empty();
+				$.ajax({
+						type: "POST",
+						url: server_ip+"/api.php",
+						data:"list_area=tru&user_id="+_user.id
+					  }).done(function(response) {
+					  console.log(response);
+						areas = JSON.parse(response);
+						$("#results").empty();
+						areas.forEach(function(item){
+							
+							$("#results").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+item.name+" "+item.location+" <a data-id='"+item.id+"' class='_delete badge badge-primary badge-pill text-danger btn  btn-light'>remove</a></li>")
+						});
+					  
+						
+				  });
+				
+				$("#results").on("click", "._delete", function() { 
+					id = $(this).data('id');
+					console.log("delete "+id);
+					
+					$.ajax({
+						type: "POST",
+						url: server_ip+"/api.php",
+						data:"delete_area=tru&id="+id+"&user_id="+_user.id
+					  }).done(function(response) {
+						areas = JSON.parse(response);
+						
+						$("#results").empty();
+						areas.forEach(function(item){
+							
+							$("#results").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+item.name+" "+item.location+" <a data-id='"+item.id+"' class='_delete badge badge-primary badge-pill text-danger btn  btn-light'>remove</a></li>")
+						});
+					  
+						
+					});
+					
+					
+				});
+				
+				
+				$("#add_location_form").submit(function(){
+				
+					_data = $(this).serialize();
+					alert('Updating profile please wait... ')
+					//ajax to server for update
+					$.ajax({
+						type: "POST",
+						url: server_ip+"/api.php",
+						data:_data+"&add_area=true"
+					  }).done(function(response) {
+					  
+							if(response != 0){
+								alert ("New location Added");
+								areas = JSON.parse(response);
+								
+								$("#results").empty();
+								areas.forEach(function(item){
+									console.log(item);
+									
+									$("#results").append("<li class='list-group-item d-flex justify-content-between align-items-center'>"+item.name+" "+item.location+" <a data-id='"+item.id+"' class='_delete badge badge-primary badge-pill text-danger btn btn-light'>remove</a></li>")
+								});
+								
+								
+							}else{
+								alert ("Something went wrong please try again later.");
+							}
+						
+				  });
+				
+					return false;
+				
+				});
+				
+				
+			});
+		
+		</script>
+		
+    </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<link rel="stylesheet" href="css/image_popup.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;
+			background-size: cover;
+			background-repeat: no-repeat;
+            background-attachment: fixed;
+			 padding: 10px;
+            }
+			
+			#inputVideo{
+				width:100%;
+				visibility:hidden
+			}
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body style="background-image: url('img/bg_color.png');" class="animate__animated   animate__fadeIn">
+		
+	
+        <div class="container">
+			    <h1 style="color:white; font-size: 25px; padding-bottom: 5px;" ><img style="width:60px"  src="img/riceeta.png"/> Riceeta</h1>
+				
+				<div class="card mb-3 mt-2">
+				  <div class="row g-0">
+					<div class="col-4" style="padding-left:18px; padding-top:18px;">
+					 <!-- Trigger the Modal -->
+						<img id="myImg" src="img/bacterial-leaf-blight.jpg" alt="" style="width:100%;max-width:300px">
+
+						<!-- The Modal -->
+						<div id="myModal" class="modal">
+
+						  <!-- The Close Button -->
+						  <span class="close">&times;</span>
+
+						  <!-- Modal Content (The Image) -->
+						  <img class="modal-content" id="img01">
+
+						  <!-- Modal Caption (Image Text) -->
+						  <div id="caption"></div>
+						</div>
+					</div>
+					<div class="col">
+					  <div class="card-body">
+						<h5 class="card-title" ><strong>Bacterial Leaf Blight</strong></h5>
+						<p class="card-text" style="font-size:0.8em">Rice bacterial blight, also called bacterial blight of rice, deadly bacterial disease that is among the most destructive afflictions of cultivated rice (Oryza sativa and O. glaberrima). In severe epidemics, crop loss may be as high as 75 percent, and millions of hectares of rice are infected annually.</p>
+						
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				
+				
+				
+				<div class="card mb-3 mt-2">
+				  <div class="row g-0">
+					<div class="col-16">
+					  <div class="card-body">
+					    <p style="font-size:15px;"><strong>What it does:</strong></p>
+						<p class="card-text" style="font-size:0.8em; text-align: justify;">Bacterial blight is caused by Xanthomonas oryzae pv. oryzae. It causes wilting of seedlings and yellowing and drying of leaves.</p>
+						
+						<p style="font-size:15px; text-align: justify;"><strong>Why and Where it occurs:</strong></p>
+						<p class="card-text" style="font-size:0.8em; text-align: justify;">The disease is most likely to develop in areas that have weeds and stubbles of infected plants. It can occur in both tropical and temperate environments, particularly in irrigated and rainfed lowland areas. In general, the disease favors temperatures at 25-34 Degrees Celsius, with relative humidity above 70 percent. It is commonly observed when strong winds and continuous heavy rains occur, allowing the disease-causing bacteria to easily spread through ooze droplets on lesions of infected plants. Bacterial blight can be severe in susceptible rice varieties under high nitrogen fertilization.</p>
+						
+						<p style="font-size:15px; text-align: justify;"><strong>How to identify:</strong></p>
+						<p style="font-size:0.8em;  text-align: justify;">Check for wilting and yellowing of leaves, or wilting of seedlings (also called kresek). On seedlings, infected leaves turn grayish green and roll up. As the disease progresses, the leaves turn yellow to straw-colored and wilt, leading whole seedlings to dry up and die. Kresek on seedlings may sometimes be confused with early rice stem borer damage. To distinguish kresek symptoms from stem borer damage, squeeze the lower end of infected seedlings between the fingers. Kresek symptoms should show yellowish bacterial ooze coming out of the cut ends. Unlike plants infested with stem borer, rice plants with kresek are not easily pulled out from soil.</p>
+						
+						<p style="font-size:15px; text-align: justify;">Check for lesions:</p>
+							<ul style="font-size:0.8em">
+							  <li>On older plants, lesions usually develop as water-soaked to yellow-orange stripes on leaf blades or leaf tips or on mechanically injured parts of leaves. Lesions have a wavy margin and progress toward the leaf base.</li>
+							  <li>On young lesions, bacterial ooze resembling a milky dew drop can be observed early in the morning. The bacterial ooze later on dries up and becomes small yellowish beads underneath the leaf. </li>
+							  <li>Old lesions turn yellow to grayish white with black dots due to the growth of various saprophytic fungi. On severely infected leaves, lesions may extend to the leaf sheath.</li>
+							</ul>
+						
+						<p style="font-size:15px; text-align: justify;"><strong>To quickly diagnose bacterial blight on leaf:</strong></p>
+							<ul style="font-size:0.8em">
+								 <li>cut a young lesion across and place in a transparent glass container with clear water</li>
+								 <li>after a few minutes, hold the container against light and observe for thick or turbid liquid coming from the cut end of the leaf</li>
+							</ul>
+						
+						<p style="font-size:15px; text-align: justify;"><strong>Why is it important:</strong></p>	
+							<p style="font-size:0.8em;  text-align: justify;">Bacterial blight is one of the most serious diseases of rice. The earlier the disease occurs, the higher the yield loss. Yield loss due to bacterial blight can be as much as 70 percent when susceptible varieties are grown, in environments favorable to the disease. When plants are infected at booting stage, bacterial blight does not affect yield but results in poor quality grains and a high proportion of broken kernels.</p>
+						
+						<p style="font-size:15px; text-align: justify;"><strong>How to Manage:</strong></p>
+							<p style="font-size:0.8em;  text-align: justify;"> Planting resistant varieties has been proven to be the most efficient, most reliable, and cheapest way to control bacterial blight</p>
+					        <p style="font-size:0.8em;  text-align: justify;"> Other disease control options include:</p>
+							
+								<ul style="font-size:0.8em;">
+									<li>Use balanced amounts of plant nutrients, especially nitrogen.</li>
+									<li>Ensure good drainage of fields (in conventionally flooded crops) and nurseries.</li>
+									<li>Keep fields clean. Remove weed hosts and plow under rice stubble, straw, rice ratoons and volunteer seedlings, which can serve as hosts of bacteria.</li>
+									<li>Allow fallow fields to dry in order to suppress disease agents in the soil and plant residues.</li>
+									
+								</ul>
+						<br>
+						
+						
+							  
+						<div class="card mb-3 mt-2">
+						  <div class="row g-0">
+							<div class="col-4">
+							  <img style="padding:5px;" src="img/bacterial-leaf-blight-1.jpg" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-4">
+							  <img style="padding:5px;" src="img/bacterial-leaf-blight-2.jpg" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-4">
+							  <img style="padding:5px;" src="img/bacterial-leaf-blight-3.jpg" class="img-fluid rounded-start" alt="...">
+							</div>
+							</div>
+						</div>
+						  <p style="font-size:15px; text-align: right;">Reference: <strong>knowledgebank.irri.org</strong></p>
+					  </div>
+					</div>
+				  </div>
+				  
+				
+				</div>
+				
+				</div>
+				
+				
+				
+				
+				
+				<br/>
+				<br/>
+				<br/>
+        </div>
+		
+		<script src="cordova.js"></script>
+		<script src="js/image_modal.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script>
+			$(function(){
+				
+				
+			
+			
+			});
+		
+		</script>
+		
+    </body>
+</html>

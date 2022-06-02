@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;	
+			background-size: cover;
+			
+			background: #000000;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to top, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background-attachment: fixed;
+			
+			}
+			#inputVideo{
+				width:100%;
+				visibility:hidden
+			}
+			
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body >
+		
+	
+        <div class="app"  >
+		
+			 <div class="col-md-4 offset-md-4 col-10 offset-1 mt-5" >
+				<div style="width:60%;margin:0px auto">
+				<img class="img-fluid animate__animated animate__fadeInDownBig"  src="img/riceeta2.png" style="padding-bottom:25px"/>
+				</div>
+				<form action="" method="post" id="loginForm" class="animate__animated animate__fadeInUpBig">
+				<div class="card">
+				  <div class="card-header bg-transparent">
+					<strong>Login Form</strong>
+				  </div>
+				  <div class="card-body">
+					<div class="mb-3">
+					  <label for="exampleFormControlInput1" class="form-label">Username</label>
+					  <input type="text" class="form-control" id="input_username" placeholder="Enter username" name="username" required>
+					</div>
+					<div class="mb-3">
+					  <label for="exampleFormControlInput1" class="form-label">Password</label>
+					  <input type="password" class="form-control" id="input_password" placeholder="Enter password" name="password" required>
+					</div>
+					
+				  </div>
+				
+				  <div class="card-footer bg-transparent">
+					<button class="btn btn-primary btn-block" name="login" type="submit"> <strong>Login</strong></button>
+					<button type="button" class=" btn btn-light btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal"  style="margin:10px;">Settings</button>
+					
+				  </div>
+				  
+				  
+				</div>
+				
+				</form>
+			 </div>
+			<br>
+			<br>
+			<center>
+			<button type="button" class="animate__animated animate__fadeInDownBig btn  btn-block text-white" data-bs-toggle="modal" data-bs-target="#createAccountModal"  style=" font-size: 15px; "><strong>CREATE ACCOUNT</strong></button>
+			</center>
+        </div>
+		
+				<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			  <div class="modal-body">
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Model URL</label>
+				  <input type="text" class="form-control" id="url_model" placeholder="model url">
+				</div>
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Server URL</label>
+				  <input type="text" class="form-control" id="url_server" placeholder="server url">
+				</div>
+				
+				<code>
+				Its is important to update the model url for the correct model to be loaded first. 
+				Server URL for Database Connection
+				</code>
+				
+				
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="save_model_url">Save changes</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+        
+		
+		<!-- Modal -->
+		<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h6 class="modal-title" id="exampleModalLabel" >CREATE ACCOUNT</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+			  </div>
+			  
+			  <form id="create_account_form" method="post">
+			  <div class="modal-body">
+				
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label"><strong>Username</strong></label>
+				  <input type="text" class="form-control" id="p_username" placeholder="" required name="data[username]">
+				</div>
+				
+				<div class="input-group mb-3">
+				<label for="exampleFormControlTextarea1" class="form-label" style="width:100%"><strong>Password</strong></label>
+				  
+				  <input type="password" class="form-control" id="p_password" placeholder="" required name="data[password]">
+				  <div class="input-group-text">
+					<input class="form-check-input mt-0" type="checkbox"  onclick="showPassword()">
+				  </div>
+				</div>
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label"><strong>First Name</strong></label>
+				  <input type="text" class="form-control" id="p_first_name" placeholder="" required name="data[first_name]">
+				</div>
+								
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label"><strong>Middle Name</strong></label>
+				  <input type="text" class="form-control" id="p_middle_name" placeholder="" required name="data[middle_name]">
+				</div>
+
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label"><strong>Last Name</strong></label>
+				  <input type="text" class="form-control" id="p_last_name" placeholder="" required name="data[last_name]">
+				</div>
+
+				<div class="mb-3">
+				  <label for="exampleFormControlTextarea1" class="form-label"><strong>Address</strong></label>
+				  <textarea class="form-control" id="p_address" rows="3" required name="data[address]"></textarea>
+				</div>
+
+			  </div>
+			  <div class="modal-footer">
+				
+				<button type="submit" class="btn btn-primary" id="create_account_btn"><strong>Submit</strong></button>
+			  </div>
+			  </form>
+			  
+			</div>
+		  </div>
+		</div>
+        
+		
+		
+
+		
+		<script src="cordova.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script>
+		
+
+		
+			$(function(){
+				
+				var myModal = new bootstrap.Modal(document.getElementById('createAccountModal'), {
+				  keyboard: false
+				})
+				
+				$('#create_account_form').submit(function(){
+				
+					server_ip = window.localStorage.getItem("server_url");
+				
+					_data = $(this).serialize();
+					
+					alert("Connecting to sever:"+server_ip+" please wait...");
+					$.ajax({
+						url:server_ip+"/api.php",
+						type:'post',
+						data:_data+"&create_account=true",
+						success:function(data){
+							console.log(data);
+							if(data == 1){
+								alert("Account has been created, You can now login");
+								myModal.hide();
+								$('#create_account_form .form-control').val("");
+							}else{
+								alert(data);
+							}
+						}
+					});
+					
+					return false;
+				});
+				
+				
+				$('#loginForm').submit(function(){
+				server_ip = window.localStorage.getItem("server_url");
+				
+				_data = $(this).serialize();
+				
+				alert("Connecting to sever:"+server_ip+" please wait...");
+				$.ajax({
+					url:server_ip+"/api.php",
+					type:'post',
+					data:_data+"&login=true",
+					success:function(data){
+						console.log(data);
+						if(data !="false"){
+							
+							window.localStorage.setItem("user",data);
+							user = JSON.parse(data);
+							alert('Welcome '+user.first_name);
+							window.location = "menu.html";
+						}else{
+							alert("Invalid Username or Password")
+						}
+					}
+				});
+				
+				
+				
+				return false;
+				});
+				
+				$('#url_model').val(window.localStorage.getItem("model_url"))
+				$('#url_server').val(window.localStorage.getItem("server_url"))
+				$('#save_model_url').click(function(){
+					window.localStorage.setItem("model_url", $('#url_model').val());
+					window.localStorage.setItem("server_url", $('#url_server').val());
+					alert("Setting has been updated");
+				});
+				
+				
+				
+				
+				
+				
+			
+			});
+			
+			function showPassword() {
+			  var x = document.getElementById("p_password");
+			  if (x.type === "password") {
+				x.type = "text";
+			  } else {
+				x.type = "password";
+			  }
+			}
+			
+			
+		</script>
+		
+    </body>
+</html>

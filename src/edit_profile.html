@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;
+            padding: 10px;
+	        background-size: cover;
+			
+			background: #000000;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to top, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background-attachment: fixed;
+			}
+			h1 {
+			   padding-left: 5px;
+			}
+			#inputVideo{
+				width:100%;
+				visibility:hidden
+			}
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body class="animate__animated   animate__fadeIn">
+		
+	
+        <div class="container">
+			
+			<h1 style="color:white; font-size: 30px;" ><img style="width:60px"  src="img/riceeta.png"/> Riceeta</h1>
+			<p style="color:white; font-size: 10px; text-align: center;" class="fs-6">Updating your profile make sure to use proper information as this will reflect on your future submition of data.</p>
+			
+			
+			<div class="card border-dark mb-3" >
+			  <div class="card-header"><strong>Profile Page</strong></div>
+			  <form action="" method="post" id="edit_profile_form">
+			  
+			  <div class="card-body text-dark">
+				
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">First Name</label>
+				  <input type="text" class="form-control" id="p_first_name" placeholder="" required name="data[first_name]">
+				  <input type="hidden" class="form-control" id="p_user_id" placeholder="" required name="data[user_id]">
+				</div>
+								
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
+				  <input type="text" class="form-control" id="p_middle_name" placeholder="" required name="data[middle_name]">
+				</div>
+
+				
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+				  <input type="text" class="form-control" id="p_last_name" placeholder="" required name="data[last_name]">
+				</div>
+
+				<div class="mb-3">
+				  <label for="exampleFormControlTextarea1" class="form-label">Address</label>
+				  <textarea class="form-control" id="p_address" rows="3" required name="data[address]"></textarea>
+				</div>
+				
+				
+				<div class="input-group mb-3">
+				<label for="exampleFormControlTextarea1" class="form-label" style="width:100%">Password</label>
+				  
+				  <input type="password" class="form-control" id="p_password" placeholder="" required name="data[password]">
+				  <div class="input-group-text">
+					<input class="form-check-input mt-0" type="checkbox"  onclick="showPassword()">
+				  </div>
+				</div>
+				
+				
+				
+				
+			  </div>
+			
+			  <div class="card-footer">
+				<button class="btn btn-primary" type="submit" name="update_profile"><strong>Update Profile</strong></button>
+			  </div>
+			  
+			  </form>
+			
+			</div>
+			
+			
+			<br>
+			<br>
+			<br>
+			<br>
+			
+        </div>
+		
+		
+		
+		<script src="cordova.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script>
+			$(function(){
+				
+				server_ip = window.localStorage.getItem("server_url");
+				model_ip = window.localStorage.getItem("model_url");
+				_user = JSON.parse(window.localStorage.getItem("user"));
+				
+				
+				$('#p_user_id').val(_user.id);
+				$('#p_first_name').val(_user.first_name);
+				$('#p_middle_name').val(_user.middle_name);
+				$('#p_last_name').val(_user.last_name);
+				$('#p_address').val(_user.address);
+				$('#p_password').val(_user.password);
+				
+				
+				
+				
+				$("#edit_profile_form").submit(function(){
+				
+					_data = $(this).serialize();
+					alert('Updating profile please wait... ')
+					//ajax to server for update
+					$.ajax({
+						type: "POST",
+						url: server_ip+"/api.php",
+						data:_data+"&update_profile=true"
+					  }).done(function(response) {
+					  
+							if(response == 1){
+								alert ("Profile has been updated. You will be redirected to login page");
+								window.history.go(-2);
+							}else{
+								alert ("Something went wrong please try again later.");
+							}
+						
+				  });
+				
+					return false;
+				
+				});
+				
+			
+			});
+			
+			function showPassword() {
+			  var x = document.getElementById("p_password");
+			  if (x.type === "password") {
+				x.type = "text";
+			  } else {
+				x.type = "password";
+			  }
+			}
+		
+		</script>
+		
+    </body>
+</html>

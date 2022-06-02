@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;
+            padding: 10px;
+	        background-size: cover;
+			
+			background: #000000;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to top, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background-attachment: fixed;
+			}
+			
+			h1 {
+			   padding-left: 10px;
+			}
+			#inputVideo{
+				width:100%;
+				height:360px;
+				position:absolute;
+				//left:-999px;
+				visibility:hidden;
+			}
+			#overlay{
+				height:250px;
+			}
+			#overlay2{
+			position: absolute;
+			left: 10px;
+			bottom: 10px;
+			width: 50px;
+			border: 2px	 solid #fff;
+			}
+			
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body class="animate__animated   animate__fadeIn">
+		
+	
+        <div class="container ">
+			
+			<h1 style="color:white; font-size: 30px;" ><img style="width:60px"  src="img/riceeta.png"/> Riceeta</h1>
+			<p style="color:white; font-size: 10px; text-align: center;" class="fs-6">Capture any rice leaf with disease. Make sure to focus the camera before clicking <strong> Analyze Leaf </strong>.</p>
+			
+			<div class="w3-center topp-padding w3-padding-bottom" style="position:relative">
+				<video id="inputVideo" autoplay muted width="600" height="450" class="img-fluid"></video>
+			 
+				<canvas id="overlay" width="600" height="450" class="img-fluid"></canvas>
+				
+			  <canvas id="overlay2" width="600" height="450" class="img-fluid"></canvas>
+				
+			</div> 
+			<div class="w3-center" id="progress-holder">
+				<div class="progress">
+				  <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+				</div>
+				<p>Model is loading...</p></div>
+			</div>
+			
+		
+			<form id="addPhotoForm" action="" onsubmit="return false" class="form p-2">
+				
+				<div class="form-group">
+					<label for="formGroupExampleInput" style="color:white;"><strong>Select Farm</strong></label>
+					<select name="area_id" id="areaForm" class="form-control" required>
+				  </select>
+				</div>
+				<br>
+				<div class="form-group">
+					<label for="formGroupExampleInput" style="color:white;"><strong>Disease</strong></label>
+					<input name="disease_id" type="text" class="form-control" id="diseaseInput" placeholder="" required>
+				</div>
+				
+				<div class="form-group">
+					<label for="formGroupExampleInput" style="color:white;"><strong>Value</strong></label>
+					<input name="value" type="text" class="form-control" id="valueInput" placeholder="" required>
+				</div>
+				
+				<br>
+				<button class="btn btn-primary" id="analyzeLeaf" type="button" ><strong> Analyze Leaf </strong></button>
+				<button class="btn btn-secondary" type="button" id="save_results" style="margin:10px;"><strong> Save Results </strong></button>
+			</form>
+		
+			<div class="w3-center w3-border add-margin side-margin w3-round w3-sand
+             text-color space-letters bottom-margin" style="color:white; font-size: 16px;">
+	
+	<p id="status" class='space-letters text-color mob-font1' ></p>
+	<p style="color:white; font-size: 15px; padding-left: 10px;" class="fs-6">Note: Click "Save Results" before viewing the diagnosis.</p>
+	<p style="color:white; font-size: 15px; padding-left: 10px;" class="fs-6"><strong>Disease Percentage:</strong></strong>.</p>
+	<ol class='w3-left-align text-color' id='prediction-list'></ol>
+		
+</div>
+
+			
+	<div class="p-3" >
+		
+		
+		<p style="color:white; font-size: 15px; text-align: left;" id="diagnosis"></p>
+		<p style="color:white; font-size: 15px; text-align: left;" id="uploadMessage" ></p>
+		<img id="fromServer" class="img-fluid">
+		
+	
+	</div>
+
+			
+    </div>
+		
+		
+	
+		<script src="cordova.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<!-- Load TensorFlow.js -->
+		<script src="js/tf.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script src="js/tracking-min.js"></script>
+		
+		<script>
+		let _current_click_frame;
+			$(function(){
+				server_ip = window.localStorage.getItem("server_url");
+				model_ip = window.localStorage.getItem("model_url");
+				_user = JSON.parse(window.localStorage.getItem("user"));
+				
+				$('#diseaseInput,#valueInput').val("");
+				
+				
+				$('#save_results').hide();
+				
+				TARGET_CLASSES = {
+				  0: "leaf_blight",
+				  1: "tungro",
+				  2: "leaf_blast"
+				};
+				
+				DIAGNOSIS_CLASSES = {
+				  "leaf_blight":"An early symptom of bacterial leaf spot is small (less than 0.25 inch in diameter), water-soaked leaf spots on the older leaves of the plant. These lesions are typically bordered by leaf veins and angular in shape. Lesions quickly turn black (a diagnostic characteristic of this disease).",
+				  "tungro":"Infected glumes and panicle branches have dark brown to black oval spots or discoloration on the entire surface. Spikelets can also be infected. Infection of florets leads to incomplete or disrupted grain filling and a reduction in grain quality.",
+				  "leaf_blast":"Leaf smut, caused by the fungus Entyloma oryzae, is awidely distributed, but somewhat minor, disease of rice.The fungus produces slightly raised, angular, blackspots (sori) on both sides of the leaves (Figure 1).Although rare, it also can produce spots on leaf sheaths.The black spots are about 0.5 to 5.0 millimeters long and 0.5 to 1.5 millimeters wide. "
+				};
+				
+				function getBase64(file) {
+				  return new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.readAsDataURL(file);
+					reader.onload = () => resolve(reader.result);
+					reader.onerror = error => reject(error);
+				  });
+				}
+				
+				//load model
+				let model;
+				(async function () {
+					
+					model = await tf.loadLayersModel(model_ip+'/model.json',
+					{
+						onProgress: function(p){ 
+							$('#progress-bar').css({'width':p*100+'%'}); 
+							}
+					});
+					
+					$("#selected-image").attr("src", "img/default.jpg")				
+					// Hide the model loading spinner
+					$('#progress-holder').hide();
+					
+					
+				})();
+				
+				
+				
+				$.ajax({
+						type: "POST",
+						url: server_ip+"/api.php",
+						data:"list_area=tru&user_id="+_user.id
+					  }).done(function(response) {
+						areas = JSON.parse(response);
+						
+						areas.forEach(function(item){
+							$('#areaForm').append("<option value='"+item.id+"'>"+item.name+" "+item.location+"</option>");
+						
+						})
+						
+				  });
+				
+				
+				$('#save_results').click(function(){
+				
+					
+					_data = $('#addPhotoForm').serialize()+'&upload_image=true&user_id='+_user.id;
+					alert('uploading please wait...');
+					console.log(_data);
+					
+						
+						//console.log(data);
+							$.ajax({
+								type: "POST",
+								url: server_ip+"/api.php",
+								data:_data+'&imgBase64='+encodeURIComponent(_current_click_frame)
+							  }).done(function(response) {
+								console.log('saved: ' + response); 
+								$('#fromServer').attr("src",server_ip+'/'+response);
+								alert('saved: ' + response);
+								$('#uploadMessage').empty().append('saved: ' + response);
+								
+						  });
+						  
+						  
+						  
+						  
+					
+					
+					
+					
+					return false;
+				})
+				
+
+				
+				$("#analyzeLeaf").click(async function () {
+					
+					
+					
+					let image = $('#overlay2').get(0);
+					_current_click_frame = image.toDataURL();
+					$('#fromServer').attr({'src':image.toDataURL()})
+					
+					// Pre-process the image
+					let tensor = tf.browser.fromPixels(image)
+					.resizeNearestNeighbor([224,224]) // change the image size here
+					.toFloat()
+					.div(tf.scalar(255.0))
+					.expandDims();
+					
+					
+					
+					
+					
+					// Pass the tensor to the model and call predict on it.
+					// Predict returns a tensor.
+					// data() loads the values of the output tensor and returns
+					// a promise of a typed array when the computation is complete.
+					// Notice the await and async keywords are used together.
+					let predictions = await model.predict(tensor).data();
+					let top5 = Array.from(predictions)
+						.map(function (p, i) { // this is Array.map
+							return {
+								probability: p,
+								className: TARGET_CLASSES[i] // we are selecting the value from the obj
+							};
+								
+							
+						}).sort(function (a, b) {
+							return b.probability - a.probability;
+								
+						}).slice(0, 3);
+						
+						
+					
+				$("#prediction-list").empty();
+				console.log(top5)
+				$('#valueInput').val(top5[0].probability.toFixed(2)*100);
+				$('#diseaseInput').val(top5[0].className);
+				$('#diagnosis').empty().append('<h3 style="color:white; font-size: 18px; text-align: center; font-weight: bold;"> Diagnosis for <a  href="d_'+top5[0].className+'.html" "> '+top5[0].className+'</a></h3><br/>').append(DIAGNOSIS_CLASSES[top5[0].className]);
+				$('#save_results').show();
+				
+				top5.forEach(function (p) {
+
+					$("#prediction-list").append('<li>'+p.className+': '+p.probability.toFixed(2) *100+'% </li>');
+
+				});
+
+			
+			});
+			});
+		
+		
+		
+		
+
+		</script>
+		
+		
+		<script src="js/recognizer.js"></script>
+		
+		
+    </body>
+</html>

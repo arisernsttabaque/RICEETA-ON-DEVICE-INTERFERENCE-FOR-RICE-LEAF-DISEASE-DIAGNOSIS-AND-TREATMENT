@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+       <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/animate.css">
+		<style>
+			html, body, .ion-app, .ion-content {
+			height: 100%;
+			padding: 10px;
+			background-size: cover;
+			background: #000000;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to top, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			 background-attachment: fixed;
+			}
+			
+			p {
+			   text-align: center;
+			 }
+			h1 {
+			   padding: 10px;
+			}
+			
+		  
+					#inputVideo{
+						width:100%;
+						visibility:hidden
+					}
+					
+					
+					.list-group-item{
+						background:rgba(255,255,255,0.2)
+					}
+					
+					.list-group-item a{
+						background:#fff;
+					}
+					
+			
+		</style>
+        <title>Riceeta</title>
+    </head>
+    <body class="animate__animated  animate__fadeIn">
+		
+	
+        <div class="container">
+			
+			<h1 style="color:white" ><img style="width:70px"  src="img/riceeta.png"/> Riceeta</h1>
+			<p style="color:white" class="fs-6">On-device Inference - Machine Learning on Mobile to detect diseases on Rice leaf for bacterial blight, tungro and leaf blast.</p>
+			
+			<ul class="list-group">
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" href="final_recognizer.html"><img class="img-fluid" src="img/icons/camera.png"> <strong> &nbsp;Camera </strong></a></li>
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" href="add_photo.html"><img class="img-fluid" src="img/icons/add_photo.png"> <strong> &nbsp;Add Photo </strong></a></li>
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" href="report.html"><img class="img-fluid" src="img/icons/assessment.png"> <strong> &nbsp;Report </strong> </a></li>
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" href="locations.html"><img class="img-fluid" src="img/icons/location.png"><strong> &nbsp; Locations </strong></a></li>
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" href="edit_profile.html"><img class="img-fluid" src="img/icons/manage_accounts.png"><strong> &nbsp; Profile </strong></a></li>
+			  <li class="list-group-item border-0"><a class="btn btn-outline-success p-3" style="width:100%" data-bs-toggle="modal" data-bs-target="#exampleModal"><img class="img-fluid" src="img/icons/settings.png"><strong> &nbsp; Settings </strong></a></li>
+			  
+			</ul>
+        </div>
+		<br>
+		
+		<footer>
+		  <p style="color:white; font-size:0.8em">LEBRILLA &#8226; LUIS &#8226; SOLANIB &#8226; TABAQUE</p>
+		  <p style="color:white; font-size:0.8em">Copyright &copy;2021</p>
+		</footer>
+		<br>
+				<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			  <div class="modal-body">
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Model URL</label>
+				  <input type="text" class="form-control" id="url_model" placeholder="model url">
+				</div>
+				<div class="mb-3">
+				  <label for="exampleFormControlInput1" class="form-label">Server URL</label>
+				  <input type="text" class="form-control" id="url_server" placeholder="server url">
+				</div>
+				
+				<code>
+				Its is important to update the model url for the correct model to be loaded first. 
+				Server URL for Database Connection
+				</code>
+				
+				
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="save_model_url">Save changes</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+       
+		
+		<script src="cordova.js"></script>
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<script>
+			$(function(){
+				
+				
+				$('#url_model').val(window.localStorage.getItem("model_url"))
+				$('#url_server').val(window.localStorage.getItem("server_url"))
+				$('#save_model_url').click(function(){
+					window.localStorage.setItem("model_url", $('#url_model').val());
+					window.localStorage.setItem("server_url", $('#url_server').val());
+					alert("Setting has been updated");
+				});
+				
+			
+			});
+		
+		</script>
+		
+    </body>
+</html>
