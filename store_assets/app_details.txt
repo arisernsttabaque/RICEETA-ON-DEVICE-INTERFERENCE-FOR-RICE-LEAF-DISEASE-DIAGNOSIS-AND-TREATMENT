@@ -1,0 +1,15 @@
+App Details:
+Riceeta is a mobile application in which it could capture rice leaf diseases and at the same time, it could identify what type of disease and gives diagnosis such as a certain disease affects the rice crop and how to prevent it on spreading.
+
+Full Description:
+Riceeta is a mobile application in which it could capture rice leaf diseases and at the same time, it could identify what type of disease and gives diagnosis such as a certain disease affects the rice crop and how to prevent it on spreading.
+ 
+It has a feature wherein the number of diseases is shown on graph and table according to the months that it has been captured, list of images taken together with dates and time and disease type.
+
+The collected data is analyzed to provide a summary of events.
+
+This app is to generate a report wherein all the data/save results are presented on various charts. Meanwhile the location feature enables the farmer to add and locate the area of the rice field. 
+
+It could be used in day-to-day monitoring of rice plants to help farmers and agriculture enthusiasts to easily identify the diseases if they have doubt on what the rice leaf disease is.
+
+Link: https://drive.google.com/drive/folders/1PLSSX67_-kKIjVlEB_y_rlvgXDLlCH4M?usp=sharing
